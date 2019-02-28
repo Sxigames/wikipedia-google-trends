@@ -1,9 +1,15 @@
 import feedparser
-
+import wikipedia
+wikipedia.set_lang('pt')
+html = open('index.html', 'w', encoding='utf-8')
 Trends = feedparser.parse('https://trends.google.com/trends/trendingsearches/daily/rss?geo=BR')
 
-trend1 = Trends.entries[0]
-trend2 = Trends.entries[1]
-trend3 = Trends.entries[2]
-trend4 = Trends.entries[3]
-trend5 = Trends.entries[4]
+html.write("""<html>
+<head></head><body>""")
+for trend in Trends.entries:
+    wiki_result = wikipedia.summary(trend.title)
+    html.write(f"""<p>{wiki_result}</p><br>""")
+
+
+html.write("""</body></html>""")
+html.close()
